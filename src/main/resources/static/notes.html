@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Form</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Notes Form</h2>
+
+    <form id="notesForm">
+
+        <label>Note</label>
+        <textarea id="noteText" rows="4" required></textarea>
+
+        <label>Customer ID</label>
+        <input type="number" id="customerId" required>
+
+        <label>Lead ID</label>
+        <input type="number" id="leadId" required>
+
+        <label>User ID</label>
+        <input type="number" id="userId" required>
+
+        <button type="submit">Submit</button>
+
+    </form>
+</div>
+
+<script>
+document.getElementById("notesForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const note = {
+        noteText: document.getElementById("noteText").value,
+        customerId: Number(document.getElementById("customerId").value),
+        leadId: Number(document.getElementById("leadId").value),
+        userId: Number(document.getElementById("userId").value)
+    };
+
+    fetch("http://localhost:8080/api/notes", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(note)
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("Note saved successfully!");
+        console.log(data);
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Error saving note.");
+    });
+});
+</script>
+
+</body>
+</html>
